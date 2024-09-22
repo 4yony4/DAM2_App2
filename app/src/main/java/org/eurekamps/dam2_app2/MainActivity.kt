@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity(),OnClickListener {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
         btnLogin=findViewById(R.id.button)
         btnRegistrar=findViewById(R.id.button2)
         btnLogin.setOnClickListener(this)
