@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity(),OnClickListener {
         btnRegistrar=findViewById(R.id.button2)
         btnLogin.setOnClickListener(this)
         btnRegistrar.setOnClickListener(this)
-
     }
 
     override fun onClick(p0: View?) {
