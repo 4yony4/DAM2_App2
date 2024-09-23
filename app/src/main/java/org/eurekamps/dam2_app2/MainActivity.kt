@@ -12,8 +12,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import org.eurekamps.dam2_app2.controller.MainActivityController
 
-class MainActivity : AppCompatActivity(),OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     lateinit var btnLogin:Button
     lateinit var btnRegistrar:Button
@@ -21,67 +22,30 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     lateinit var edTxtUsuario:EditText
     lateinit var miToast: Toast
     var usuarioLogeado:Boolean=false
+    lateinit var mainActivityController: MainActivityController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        mainActivityController= MainActivityController(this)
 
         btnLogin=findViewById(R.id.button)
         btnRegistrar=findViewById(R.id.button2)
         edTxtPassword=findViewById(R.id.editTextTextPassword)
         edTxtUsuario=findViewById(R.id.editTextTextEmailAddress)
 
-        btnLogin.setOnClickListener(this)
-        btnRegistrar.setOnClickListener(this)
+        btnLogin.setOnClickListener(mainActivityController)
+        btnRegistrar.setOnClickListener(mainActivityController)
 
-        prueba(btnLogin)
+        mainActivityController.prueba(btnLogin)
 
         miToast=Toast.makeText(this,"USUARIO o CONTRASEÑA MAL",Toast.LENGTH_LONG)
 
         if(usuarioLogeado==true){
-            irAHomeActivity()
+            mainActivityController.irAHomeActivity()
         }
 
-    }
-
-    fun prueba(btn:Button?){
-        btn!!.text="BUTON DE LOGIN"
-
-    }
-
-    fun irAHomeActivity(){
-        val intentHomeActivity:Intent=Intent(this,HomeActivity::class.java)
-        this.startActivity(intentHomeActivity)
-        this.finish()
-    }
-
-    override fun onClick(p0: View?) {
-        /*when(p0!!.id){
-            btnLogin.id->{
-
-            }
-        }*/
-
-        if(p0!!.id==btnLogin.id){
-            Log.v("MainActivity","ESTA INTENTANDO LOGEAR CON USUARIO: "+edTxtUsuario.text.toString()+"" +
-                    " Y CON PASSWORD: "+edTxtPassword.text.toString())
-
-            if(edTxtUsuario.text.toString()=="yony@yony.com" &&
-                edTxtPassword.text.toString()=="1234567890"){
-                irAHomeActivity()
-            }
-            else{
-
-                miToast.show()
-            }
-
-
-        }
-        else if(p0!!.id==btnRegistrar.id){
-            println("!!!!!!!!!!!------>>>>>>>>>> BOTON REGISTRO")
-
-        }
     }
 }
