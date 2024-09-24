@@ -5,31 +5,40 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.MainActivity
 
 class MainActivityController(val mainActivity: MainActivity):OnClickListener {
 
 
-    override fun onClick(p0: View?) {
-        /*when(p0!!.id){
-            btnLogin.id->{
+    private var auth: FirebaseAuth
 
-            }
-        }*/
+    init {
+        auth = Firebase.auth
+    }
+
+    override fun onClick(p0: View?) {
 
         if(p0!!.id==mainActivity.btnLogin.id){
             Log.v("MainActivity","ESTA INTENTANDO LOGEAR CON USUARIO: "+mainActivity.edTxtUsuario.text.toString()+"" +
                     " Y CON PASSWORD: "+mainActivity.edTxtPassword.text.toString())
+            val email=mainActivity.edTxtUsuario.text.toString()
+            val password=mainActivity.edTxtPassword.text.toString()
 
-            if(mainActivity.edTxtUsuario.text.toString()=="yony@yony.com" &&
-                mainActivity.edTxtPassword.text.toString()=="1234567890"){
-                irAHomeActivity()
-            }
-            else{
-
-                mainActivity.miToast.show()
-            }
+            val taskLogin=auth.signInWithEmailAndPassword(email, password)
+            taskLogin.addOnCompleteListener(mainActivity) { task ->
+                    if (task.isSuccessful) {
+                        irAHomeActivity()
+                    } else {
+                        Log.w("MainActivityController", "signInWithEmail:failure", task.exception)
+                        mainActivity.miToast.show()
+                    }
+                }
 
 
         }
