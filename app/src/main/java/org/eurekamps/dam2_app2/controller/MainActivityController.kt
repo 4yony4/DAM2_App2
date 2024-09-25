@@ -12,6 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.MainActivity
+import org.eurekamps.dam2_app2.RegistroActivity
 
 class MainActivityController(val mainActivity: MainActivity):OnClickListener {
 
@@ -30,8 +31,9 @@ class MainActivityController(val mainActivity: MainActivity):OnClickListener {
             val email=mainActivity.edTxtUsuario.text.toString()
             val password=mainActivity.edTxtPassword.text.toString()
 
-            val taskLogin=auth.signInWithEmailAndPassword(email, password)
-            taskLogin.addOnCompleteListener(mainActivity) { task ->
+            if(email.isNotEmpty() && password.isNotEmpty()){
+                val taskLogin=auth.signInWithEmailAndPassword(email, password)
+                taskLogin.addOnCompleteListener(mainActivity) { task ->
                     if (task.isSuccessful) {
                         irAHomeActivity()
                     } else {
@@ -39,11 +41,14 @@ class MainActivityController(val mainActivity: MainActivity):OnClickListener {
                         mainActivity.miToast.show()
                     }
                 }
+            }
+
 
 
         }
         else if(p0!!.id==mainActivity.btnRegistrar.id){
             println("!!!!!!!!!!!------>>>>>>>>>> BOTON REGISTRO")
+            irARegistrarActivity()
 
         }
     }
@@ -57,6 +62,12 @@ class MainActivityController(val mainActivity: MainActivity):OnClickListener {
         val intentHomeActivity: Intent = Intent(mainActivity, HomeActivity::class.java)
         mainActivity.startActivity(intentHomeActivity)
         mainActivity.finish()
+    }
+
+    fun irARegistrarActivity(){
+        val intentRegistrarActivity: Intent = Intent(mainActivity, RegistroActivity::class.java)
+        mainActivity.startActivity(intentRegistrarActivity)
+
     }
 
 }
