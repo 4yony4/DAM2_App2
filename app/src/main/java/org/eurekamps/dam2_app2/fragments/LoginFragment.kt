@@ -1,5 +1,6 @@
 package org.eurekamps.dam2_app2.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.navigation.fragment.findNavController
+import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
 
 
@@ -46,12 +49,28 @@ class LoginFragment : Fragment(),OnClickListener {
 
 
     override fun onClick(p0: View?) {
-        val fragmentoRegistro:RegisterFragment= RegisterFragment()
 
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentContainerView, fragmentoRegistro)
-        //transaction.addToBackStack(null) // Optional: allows the user to navigate back
-        transaction.commit()
+        if(p0!!.id==btnLogin.id){
+            val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
+            requireActivity().startActivity(intentHomeActivity)
+            requireActivity().finish()
+        }
+        else {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+
+
+            /*
+           val fragmentoRegistro:RegisterFragment= RegisterFragment()
+
+
+           val transaction = requireActivity().supportFragmentManager.beginTransaction()
+           transaction.replace(R.id.fragmentContainerView, fragmentoRegistro)
+           //transaction.addToBackStack(null) // Optional: allows the user to navigate back
+           transaction.commit()
+            */
+        }
+
+
 
     }
 }
