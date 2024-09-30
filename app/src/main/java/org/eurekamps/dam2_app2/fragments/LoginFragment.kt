@@ -13,6 +13,10 @@ import android.widget.EditText
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
 
@@ -29,11 +33,13 @@ class LoginFragment : Fragment(),OnClickListener {
     lateinit var edTxtUsuario: EditText
 
     lateinit var auth: FirebaseAuth
+    lateinit var db:FirebaseFirestore
+    val TAG = "LoginFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth=FirebaseAuth.getInstance()
-
+        db = Firebase.firestore
     }
 
     override fun onCreateView(
@@ -53,14 +59,36 @@ class LoginFragment : Fragment(),OnClickListener {
         btnLogin.setOnClickListener(this)
         btnRegistrar.setOnClickListener(this)
 
-
         /*requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
         }*/
     }
 
 
+    fun comprobarPerfil(){
 
+        val docRef = db.collection("Profiles").document(auth.currentUser!!.uid)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
+                    requireActivity().startActivity(intentHomeActivity)
+                    requireActivity().finish()
+
+                } else {
+                    findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
+                    Log.d(TAG, "No existe el documento con los datos del perfil para esta ID")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+        /*val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
+        requireActivity().startActivity(intentHomeActivity)
+        requireActivity().finish()*/
+    }
 
     override fun onClick(p0: View?) {
 
@@ -72,9 +100,7 @@ class LoginFragment : Fragment(),OnClickListener {
                 val taskLogin=auth.signInWithEmailAndPassword(email, password)
                 taskLogin.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
-                        requireActivity().startActivity(intentHomeActivity)
-                        requireActivity().finish()
+                        comprobarPerfil()
                     } else {
                         Log.w("MainActivityController", "signInWithEmail:failure", task.exception)
                         //requireActivity().miToast.show()
