@@ -20,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
 import org.eurekamps.dam2_app2.fbclasses.FBProfile
+import org.eurekamps.dam2_app2.singletone.DataHolder
 
 
 /**
@@ -36,10 +37,6 @@ class LoginFragment : Fragment(),OnClickListener {
     lateinit var auth: FirebaseAuth
     lateinit var db:FirebaseFirestore
     val TAG = "LoginFragment"
-
-    companion object{
-        var miPerfil:FBProfile?=null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,33 +67,7 @@ class LoginFragment : Fragment(),OnClickListener {
     }
 
 
-    fun comprobarPerfil(){
 
-        val docRef = db.collection("Profiles").document(auth.currentUser!!.uid)
-        docRef.get().addOnSuccessListener { document ->
-                if (document.data != null) {
-                    miPerfil = document.toObject(FBProfile::class.java)
-
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data!!}")
-                    Log.d(TAG, "Mi Perfil data NAME: ${miPerfil!!.name}")
-
-                    val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
-                    requireActivity().startActivity(intentHomeActivity)
-                    requireActivity().finish()
-
-                } else {
-                    findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
-                    Log.d(TAG, "No existe el documento con los datos del perfil para esta ID")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-
-        /*val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
-        requireActivity().startActivity(intentHomeActivity)
-        requireActivity().finish()*/
-    }
 
     override fun onClick(p0: View?) {
 
@@ -108,7 +79,9 @@ class LoginFragment : Fragment(),OnClickListener {
                 val taskLogin=auth.signInWithEmailAndPassword(email, password)
                 taskLogin.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        comprobarPerfil()
+                        DataHolder.descargarPerfil(requireActivity()
+                            ,findNavController(),
+                            R.id.action_loginFragment_to_profileFragment)
                     } else {
                         Log.w("MainActivityController", "signInWithEmail:failure", task.exception)
                         //requireActivity().miToast.show()

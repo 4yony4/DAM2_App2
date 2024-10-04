@@ -17,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
 import org.eurekamps.dam2_app2.fbclasses.FBProfile
+import org.eurekamps.dam2_app2.singletone.DataHolder
 
 
 class ProfileFragment : Fragment(),OnClickListener {
@@ -55,6 +56,8 @@ class ProfileFragment : Fragment(),OnClickListener {
                 birthdate = Timestamp.now(),
                 hobbies = listOf("valor1", "valor2", "valor3"),
                 height = 1.84)
+
+            DataHolder.fbProfileUser=nuevoPerfil
 
             profiles.document(auth.currentUser!!.uid).set(nuevoPerfil).addOnSuccessListener {
                 val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)

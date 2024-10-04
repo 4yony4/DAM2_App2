@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
+import org.eurekamps.dam2_app2.singletone.DataHolder
 import java.util.Timer
 import java.util.TimerTask
 
@@ -29,7 +30,7 @@ class SplashFragment : Fragment() {
         iProgress=0
         startTimer()
         auth=FirebaseAuth.getInstance()
-        auth.signOut()
+        //auth.signOut()
         
     }
 
@@ -49,9 +50,9 @@ class SplashFragment : Fragment() {
 
     fun comprobarUsuarioLogeado(){
         if(auth.currentUser!=null){
-            val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
-            requireActivity().startActivity(intentHomeActivity)
-            requireActivity().finish()
+            DataHolder.descargarPerfil(requireActivity()
+                ,findNavController(),
+                R.id.action_splashFragment_to_profileFragment)
         }
         else{
             val navOptions = NavOptions.Builder()

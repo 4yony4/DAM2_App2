@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import org.eurekamps.dam2_app2.fragments.LoginFragment
+import org.eurekamps.dam2_app2.singletone.DataHolder
 
 class HomeActivity : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
 
         txtDatos=findViewById(R.id.textView)
         FirebaseAuth.getInstance().currentUser
-        txtDatos.text=LoginFragment.miPerfil!!.name
+        txtDatos.text=DataHolder.fbProfileUser!!.name
 
     }
 
