@@ -12,11 +12,11 @@ import org.eurekamps.dam2_app2.controller.RegisterActivityController
 class RegistroActivity : AppCompatActivity() {
 
     lateinit var registerActivityController: RegisterActivityController
-    lateinit var btnVolver: Button
     lateinit var btnRegistrar: Button
     lateinit var edTxtPassword: EditText
     lateinit var edTxtRepetirPassword: EditText
     lateinit var edTxtUsuario: EditText
+    lateinit var btnVolver: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,12 +2,16 @@ package org.eurekamps.dam2_app2.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
 
@@ -19,9 +23,17 @@ import org.eurekamps.dam2_app2.R
 class RegisterFragment : Fragment(),OnClickListener {
 
     lateinit var btnRegistrar:Button
+    lateinit var edTxtPassword: EditText
+    lateinit var edTxtRepetirPassword: EditText
+    lateinit var edTxtUsuario: EditText
+    lateinit var btnVolver: Button
+    lateinit var auth: FirebaseAuth
+
+    val TAG="RegisterFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth=FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -34,23 +46,44 @@ class RegisterFragment : Fragment(),OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btnRegistrar=view.findViewById(R.id.button5)
+        btnVolver=view.findViewById(R.id.button6)
+        edTxtUsuario=view.findViewById(R.id.editTextTextEmailAddress2)
+        edTxtPassword=view.findViewById(R.id.editTextTextPassword4)
+        edTxtRepetirPassword=view.findViewById(R.id.editTextTextPassword5)
+
+        btnRegistrar.setOnClickListener(this)
+        btnVolver.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
         if(p0!!.id==btnRegistrar.id){
-            val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
-            requireActivity().startActivity(intentHomeActivity)
-            requireActivity().finish()
+            val username=edTxtUsuario.text.toString()
+            val password=edTxtPassword.text.toString()
+            val repetirPass=edTxtRepetirPassword.text.toString()
+
+            if(password==repetirPass){
+                //if(isValidPassword(password)){
+                    auth.createUserWithEmailAndPassword(username, password)
+                        .addOnCompleteListener(requireActivity()) { task ->
+                            if (task.isSuccessful) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success")
+                                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.exception)
+
+                            }
+                        }
+            }
+            else{//CONTRASEÑAS NO COIINCIDEN
+
+            }
         }
         else {
-            /*val fragmentoLogin:LoginFragment= LoginFragment()
-
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainerView, fragmentoLogin)
-            //transaction.addToBackStack(null) // Optional: allows the user to navigate back
-            transaction.commit()
-
-             */
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
     }
 }
