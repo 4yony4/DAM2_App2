@@ -9,12 +9,14 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
+import org.eurekamps.dam2_app2.fbclasses.FBProfile
 
 
 class ProfileFragment : Fragment(),OnClickListener {
@@ -48,11 +50,13 @@ class ProfileFragment : Fragment(),OnClickListener {
         if(p0!!.id==btnGuarder.id){
             val profiles = db.collection("Profiles")
 
-            val data1 = hashMapOf(
-                "name" to "Yony",
-                "age" to 40,
-            )
-            profiles.document(auth.currentUser!!.uid).set(data1).addOnSuccessListener {
+            val nuevoPerfil= FBProfile(name = "Yony",
+                age = 40,
+                birthdate = Timestamp.now(),
+                hobbies = listOf("valor1", "valor2", "valor3"),
+                height = 1.84)
+
+            profiles.document(auth.currentUser!!.uid).set(nuevoPerfil).addOnSuccessListener {
                 val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
                 requireActivity().startActivity(intentHomeActivity)
                 requireActivity().finish()

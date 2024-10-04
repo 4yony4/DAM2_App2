@@ -30,6 +30,7 @@ class SplashFragment : Fragment() {
         startTimer()
         auth=FirebaseAuth.getInstance()
         auth.signOut()
+        
     }
 
     override fun onCreateView(

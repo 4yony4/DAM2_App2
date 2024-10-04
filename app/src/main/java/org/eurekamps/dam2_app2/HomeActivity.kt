@@ -1,13 +1,18 @@
 package org.eurekamps.dam2_app2
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import org.eurekamps.dam2_app2.fragments.LoginFragment
 
 class HomeActivity : AppCompatActivity() {
+
+    lateinit var txtDatos:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -17,6 +22,11 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        txtDatos=findViewById(R.id.textView)
+        FirebaseAuth.getInstance().currentUser
+        txtDatos.text=LoginFragment.miPerfil!!.name
+
     }
 
     override fun onPause() {

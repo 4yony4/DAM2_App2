@@ -19,6 +19,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
+import org.eurekamps.dam2_app2.fbclasses.FBProfile
 
 
 /**
@@ -35,6 +36,10 @@ class LoginFragment : Fragment(),OnClickListener {
     lateinit var auth: FirebaseAuth
     lateinit var db:FirebaseFirestore
     val TAG = "LoginFragment"
+
+    companion object{
+        var miPerfil:FBProfile?=null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,10 +73,13 @@ class LoginFragment : Fragment(),OnClickListener {
     fun comprobarPerfil(){
 
         val docRef = db.collection("Profiles").document(auth.currentUser!!.uid)
-        docRef.get()
-            .addOnSuccessListener { document ->
+        docRef.get().addOnSuccessListener { document ->
                 if (document.data != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    miPerfil = document.toObject(FBProfile::class.java)
+
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data!!}")
+                    Log.d(TAG, "Mi Perfil data NAME: ${miPerfil!!.name}")
+
                     val intentHomeActivity: Intent = Intent(requireActivity(), HomeActivity::class.java)
                     requireActivity().startActivity(intentHomeActivity)
                     requireActivity().finish()
