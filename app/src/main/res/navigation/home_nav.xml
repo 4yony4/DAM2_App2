@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    app:startDestination="@id/listProfilesFragment">
+
+    <fragment
+        android:id="@+id/listProfilesFragment"
+        android:name="org.eurekamps.dam2_app2.home_fragments.ListProfilesFragment"
+        android:label="fragment_list_profiles"
+        tools:layout="@layout/fragment_list_profiles" />
+</navigation>
