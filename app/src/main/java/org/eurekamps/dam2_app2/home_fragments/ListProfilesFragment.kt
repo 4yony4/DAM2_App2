@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.eurekamps.dam2_app2.R
 import org.eurekamps.dam2_app2.adapters.RvListProfilesAdapter
+import org.eurekamps.dam2_app2.fbclasses.FBProfile
 
 class ListProfilesFragment : Fragment() {
 
@@ -29,13 +30,10 @@ class ListProfilesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvListProfiles=view.findViewById(R.id.rvListProfiles)
-        val stringList = listOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
-            "Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
-            "Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
-            "Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
-            "Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
-            "Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
-        val rvListProfilesAdapter=RvListProfilesAdapter(stringList)
+        val profilesList = listOf(FBProfile(name = "Pablo", age = 19),
+            FBProfile(name = "Andrea"),FBProfile(name = "Hartman"),
+            FBProfile(name = "Alejandro"))
+        val rvListProfilesAdapter=RvListProfilesAdapter(profilesList)
         rvListProfiles.layoutManager = LinearLayoutManager(requireContext())
         rvListProfiles.adapter=rvListProfilesAdapter
 
