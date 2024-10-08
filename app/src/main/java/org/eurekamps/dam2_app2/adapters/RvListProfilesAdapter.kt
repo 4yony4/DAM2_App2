@@ -1,6 +1,7 @@
 package org.eurekamps.dam2_app2.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ class RvListProfilesAdapter(val listaDeProfiles:List<FBProfile>) : RecyclerView.
     }
 
     override fun getItemCount(): Int {
+        Log.v("FIREBASE","----------->>>>>>>>>>> "+listaDeProfiles.size)
         return listaDeProfiles.size
     }
 

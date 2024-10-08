@@ -7,4 +7,5 @@ data class FBProfile(val name: String? = null,
                      val birthdate:Timestamp? = null,
                      val hobbies:List<String>? = null,
                      val height:Double = 0.0,
+                     val colorPelo:String? = null
 )
