@@ -39,11 +39,9 @@ class ListProfilesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvListProfiles=view.findViewById(R.id.rvListProfiles)
-        var profilesList = mutableListOf(FBProfile(name = "Pablo", age = 19),
-            FBProfile(name = "Andrea"),FBProfile(name = "Hartman"),
-            FBProfile(name = "Alejandro"))
+        var profilesList = mutableListOf<FBProfile>()
 
-        val rvListProfilesAdapter=RvListProfilesAdapter(profilesList)
+        val rvListProfilesAdapter=RvListProfilesAdapter(profilesList,this)
         rvListProfiles.layoutManager = LinearLayoutManager(requireContext())
         rvListProfiles.adapter=rvListProfilesAdapter
 

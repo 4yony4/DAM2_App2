@@ -68,7 +68,7 @@ class SplashFragment : Fragment() {
     fun startTimer() {
         val timer = Timer()
         var counter = 0
-        val totalRuns = 4
+        val totalRuns = 1
 
         timer.schedule(object : TimerTask() {
             override fun run() {

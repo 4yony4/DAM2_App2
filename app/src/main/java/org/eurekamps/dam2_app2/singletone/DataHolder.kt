@@ -17,6 +17,9 @@ import org.eurekamps.dam2_app2.fbclasses.FBProfile
 
 object DataHolder {
     var fbProfileUser:FBProfile?=null
+    var fbProfileUserSelected:FBProfile?=null
+    var homeActivity:HomeActivity?=null
+
     val TAG="DataHolder"
 
     fun descargarPerfil(miActivity:Activity,miNav: NavController, idActionNav:Int){

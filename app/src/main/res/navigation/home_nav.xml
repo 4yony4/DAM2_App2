@@ -9,5 +9,14 @@
         android:id="@+id/listProfilesFragment"
         android:name="org.eurekamps.dam2_app2.home_fragments.ListProfilesFragment"
         android:label="fragment_list_profiles"
-        tools:layout="@layout/fragment_list_profiles" />
+        tools:layout="@layout/fragment_list_profiles" >
+        <action
+            android:id="@+id/action_listProfilesFragment_to_homeProfileFragment"
+            app:destination="@id/homeProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeProfileFragment"
+        android:name="org.eurekamps.dam2_app2.home_fragments.HomeProfileFragment"
+        android:label="fragment_home_profile"
+        tools:layout="@layout/fragment_home_profile" />
 </navigation>
