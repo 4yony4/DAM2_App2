@@ -82,7 +82,9 @@ class ListProfilesFragment : Fragment() {
 
                 val posIni=0
                 for (document in resultQuery.documents){
+
                     val fbProfileTemp=document.toObject(FBProfile::class.java)
+                    fbProfileTemp!!.sUID=document.id
                     profilesList.add(fbProfileTemp!!)
                     //Log.v("FIREBASE","NOMBRE DOCUMENTO DESCARGO: "+fbProfileTemp!!.name)
                 }

@@ -18,5 +18,17 @@
         android:id="@+id/homeProfileFragment"
         android:name="org.eurekamps.dam2_app2.home_fragments.HomeProfileFragment"
         android:label="fragment_home_profile"
-        tools:layout="@layout/fragment_home_profile" />
+        tools:layout="@layout/fragment_home_profile" >
+        <action
+            android:id="@+id/action_homeProfileFragment_to_photoFragment"
+            app:destination="@id/photoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoFragment"
+        android:name="PhotoFragment"
+        android:label="PhotoFragment" >
+        <action
+            android:id="@+id/action_photoFragment_to_homeProfileFragment"
+            app:destination="@id/homeProfileFragment" />
+    </fragment>
 </navigation>
