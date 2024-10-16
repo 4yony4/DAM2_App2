@@ -3,6 +3,10 @@
     <style name="Base.Theme.DAM2_App2" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Make the window fullscreen, hiding the status and navigation bars -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="Theme.DAM2_App2" parent="Base.Theme.DAM2_App2" />
