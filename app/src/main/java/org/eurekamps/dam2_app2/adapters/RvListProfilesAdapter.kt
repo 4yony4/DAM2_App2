@@ -11,7 +11,7 @@ import org.eurekamps.dam2_app2.R
 import org.eurekamps.dam2_app2.fbclasses.FBProfile
 import org.eurekamps.dam2_app2.viewholders.StringViewHolder
 
-class RvListProfilesAdapter(val listaDeProfiles:List<FBProfile>,val fragmentoPadre:Fragment) : RecyclerView.Adapter<StringViewHolder>() {
+class RvListProfilesAdapter(var listaDeProfiles:List<FBProfile>,val fragmentoPadre:Fragment) : RecyclerView.Adapter<StringViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StringViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_cell1, parent, false)

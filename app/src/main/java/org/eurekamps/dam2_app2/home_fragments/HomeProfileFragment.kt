@@ -8,6 +8,8 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 import org.eurekamps.dam2_app2.R
@@ -21,6 +23,7 @@ import org.eurekamps.dam2_app2.singletone.DataHolder
  */
 class HomeProfileFragment : Fragment(),OnClickListener {
 
+    private val viewModelListProfiles: ListProfilesViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,7 @@ class HomeProfileFragment : Fragment(),OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val imgProfileSelected:ImageView=view.findViewById(R.id.ivProfileSelected)
-        Picasso.get().load(DataHolder.fbProfileUserSelected?.sImgUrl).into(imgProfileSelected)
+        Picasso.get().load(viewModelListProfiles.fbProfileUserSelected.value?.sImgUrl).into(imgProfileSelected)
 
         view.findViewById<Button>(R.id.button8).setOnClickListener(this)
 

@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
@@ -20,7 +22,9 @@ import java.util.TimerTask
 
 class ListProfilesFragment : Fragment() {
 
-    val db = Firebase.firestore
+
+
+    private val viewModelProfiles: ListProfilesViewModel by activityViewModels()
 
     lateinit var rvListProfiles:RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,62 +43,19 @@ class ListProfilesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvListProfiles=view.findViewById(R.id.rvListProfiles)
-        var profilesList = mutableListOf<FBProfile>()
 
-        val rvListProfilesAdapter=RvListProfilesAdapter(profilesList,this)
+        val rvListProfilesAdapter=RvListProfilesAdapter(viewModelProfiles.sharedProfilesList.value!!,this)
         rvListProfiles.layoutManager = LinearLayoutManager(requireContext())
         rvListProfiles.adapter=rvListProfilesAdapter
 
-        val docRef = db.collection("Profiles")
-        /*docRef.get().addOnSuccessListener { resultQuery ->
-            profilesList.clear()
-            rvListProfilesAdapter.notifyItemRangeRemoved(0,profilesList.size-1)
+        viewModelProfiles.sharedProfilesList.observe(viewLifecycleOwner) { value ->
+            // Use the value, e.g., display it in a TextView
+            rvListProfilesAdapter.listaDeProfiles=value
+            rvListProfilesAdapter.notifyDataSetChanged()
 
-            val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-
-                if(!resultQuery.isEmpty){
-                    val posIni=profilesList.size
-                    for (document in resultQuery.documents){
-                        val fbProfileTemp=document.toObject(FBProfile::class.java)
-                        profilesList.add(fbProfileTemp!!)
-                        //Log.v("FIREBASE","NOMBRE DOCUMENTO DESCARGO: "+fbProfileTemp!!.name)
-                    }
-                    val posFin=profilesList.size-1
-                    rvListProfilesAdapter.notifyItemRangeInserted(posIni,posFin)
-                    //rvListProfilesAdapter.notifyDataSetChanged()
-                }
-
-            }, 2000)
-        }.addOnFailureListener {}
-        */
-
-        docRef.addSnapshotListener { resultQuery, e ->
-            if (e != null) {
-                return@addSnapshotListener
-            }
-
-            if (resultQuery != null && !resultQuery.isEmpty) {
-                val tempSize=profilesList.size
-                profilesList.clear()
-                rvListProfilesAdapter.notifyItemRangeRemoved(0,tempSize)
-
-
-                val posIni=0
-                for (document in resultQuery.documents){
-
-                    val fbProfileTemp=document.toObject(FBProfile::class.java)
-                    fbProfileTemp!!.sUID=document.id
-                    profilesList.add(fbProfileTemp!!)
-                    //Log.v("FIREBASE","NOMBRE DOCUMENTO DESCARGO: "+fbProfileTemp!!.name)
-                }
-                val posFin=profilesList.size
-                rvListProfilesAdapter.notifyItemRangeInserted(posIni,posFin)
-                //rvListProfilesAdapter.notifyDataSetChanged()
-            } else {
-
-            }
         }
+
+        viewModelProfiles.descargarDatos()
 
     }
 

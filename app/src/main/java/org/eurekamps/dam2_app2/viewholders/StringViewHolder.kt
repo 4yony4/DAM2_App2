@@ -7,12 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import org.eurekamps.dam2_app2.R
 import org.eurekamps.dam2_app2.fbclasses.FBProfile
+import org.eurekamps.dam2_app2.home_fragments.ListProfilesViewModel
 import org.eurekamps.dam2_app2.singletone.DataHolder
 
 class StringViewHolder(val view: View,val fragmentoPadre: Fragment) : RecyclerView.ViewHolder(view),OnClickListener {
@@ -36,7 +39,9 @@ class StringViewHolder(val view: View,val fragmentoPadre: Fragment) : RecyclerVi
     }
 
     override fun onClick(p0: View?) {
-        DataHolder.fbProfileUserSelected=fbProfile
+        val viewModel: ListProfilesViewModel by fragmentoPadre.activityViewModels()
+
+        viewModel.setProfile(fbProfile)
 
         fragmentoPadre.findNavController().navigate(R.id.action_listProfilesFragment_to_homeProfileFragment)
         Log.v("StringViewHolder","------>>>>>> CLICK CELDA "+fbProfile.name)

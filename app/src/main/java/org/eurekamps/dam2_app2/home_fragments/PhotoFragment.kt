@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -22,9 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import org.eurekamps.dam2_app2.HomeActivity
 import org.eurekamps.dam2_app2.R
 import org.eurekamps.dam2_app2.fbclasses.FBProfile
+import org.eurekamps.dam2_app2.home_fragments.ListProfilesViewModel
 import org.eurekamps.dam2_app2.singletone.DataHolder
 import java.io.ByteArrayOutputStream
 
@@ -35,6 +39,8 @@ class PhotoFragment : Fragment(),OnClickListener {
     val storageRef = firebaseStorage.reference
     lateinit var db: FirebaseFirestore
     lateinit var auth: FirebaseAuth
+
+    private val viewModelListProfiles: ListProfilesViewModel by activityViewModels()
 
     // ActivityResultLauncher for capturing a picture from the camera
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
@@ -81,9 +87,9 @@ class PhotoFragment : Fragment(),OnClickListener {
             taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
                 val downloadURL = uri.toString() // This is the URL to the uploaded image
                 val profiles = db.collection("Profiles")
-                 DataHolder.fbProfileUserSelected!!.sImgUrl=downloadURL
+                viewModelListProfiles.fbProfileUserSelected.value?.sImgUrl=downloadURL
 
-                profiles.document(DataHolder.fbProfileUserSelected!!.sUID!!).set(DataHolder.fbProfileUserSelected!!).addOnSuccessListener {
+                profiles.document(viewModelListProfiles.fbProfileUserSelected.value?.sUID!!).set(viewModelListProfiles.fbProfileUserSelected!!).addOnSuccessListener {
                     // Navigate after successful Firestore update
                     findNavController().navigate(R.id.action_photoFragment_to_homeProfileFragment)
                 }.addOnFailureListener {
@@ -110,6 +116,7 @@ class PhotoFragment : Fragment(),OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         imageView = view.findViewById(R.id.imageView)
+        Picasso.get().load(viewModelListProfiles.fbProfileUserSelected.value?.sImgUrl).into(imageView)
 
         // Set up buttons for opening camera and gallery
         view.findViewById<Button>(R.id.btnCamera).setOnClickListener(this)
