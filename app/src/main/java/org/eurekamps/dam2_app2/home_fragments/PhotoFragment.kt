@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build.VERSION
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -43,17 +45,19 @@ class PhotoFragment : Fragment(),OnClickListener {
     private val viewModelListProfiles: ListProfilesViewModel by activityViewModels()
 
     // ActivityResultLauncher for capturing a picture from the camera
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
+    /*private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
         bitmap?.let {
             imageView.setImageBitmap(it)
             subirImagen()
         } ?: run {
             showToast("Failed to capture image")
         }
-    }
+    }*/
 
     // ActivityResultLauncher for picking an image from the gallery
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             imageView.setImageURI(it)
             subirImagen()
@@ -123,9 +127,23 @@ class PhotoFragment : Fragment(),OnClickListener {
         view.findViewById<Button>(R.id.btnGallery).setOnClickListener(this)
     }
 
+
+    private fun respuestaCamera(bitmap: Bitmap?){
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap)
+            subirImagen()
+        } else {
+            showToast("Failed to capture image")
+        }
+    }
+
     // Function to open the camera
     private fun openCamera() {
-        takePictureLauncher.launch(null)
+        registerForActivityResult(
+            ActivityResultContracts.TakePicturePreview(),
+            ::respuestaCamera).launch(null)
+
+        //takePictureLauncher.launch(null)
     }
 
     // Function to open the gallery
